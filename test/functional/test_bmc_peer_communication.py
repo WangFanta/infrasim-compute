@@ -120,11 +120,9 @@ class test_bmc_communication(unittest.TestCase):
         emu_file = os.path.join(emu_dir, node_type + ".emu")
         if ns_name == "node0ns":
             for i in add_content0:
-                emu_file_for_del0 = emu_file
                 os.system("echo {} >> {}".format(i, emu_file))
         if ns_name == "node1ns":
             for i in add_content1:
-                emu_file_for_del1 = emu_file
                 os.system("echo {} >> {}".format(i, emu_file))
 
         fake_node['name'] = node_name
@@ -149,7 +147,7 @@ class test_bmc_communication(unittest.TestCase):
             fake_node["bmc"]["peer-bmcs"][0]["host"] = "192.168.188.91"
 
         fake_node_up = self._start_node(fake_node)
-        return fake_node_up
+        return fake_node_up, emu_file
 
     def client_ssh(self, ns_ip):
         ssh = sshclient.SSH(host=ns_ip, username="root", password="root", port=8022)
@@ -162,13 +160,14 @@ class test_bmc_communication(unittest.TestCase):
         global ivn_file
         global fake_node0
         global fake_node1
-        global emu_file
-        global emu_file_for_del0
-        global emu_file_for_del1
         topo = Topology(ivn_file)
         topo.create()
-        fake_node0 = self.node_cfg_up('test0', 'node0ns', fixtures.a_boot_image, "dell_r730")
-        fake_node1 = self.node_cfg_up('test1', 'node1ns', fixtures.b_boot_image, "quanta_d51")
+        fake_node0_list = self.node_cfg_up('test0', 'node0ns', fixtures.a_boot_image, "dell_r730")
+        fake_node0 = fake_node0_list[0]
+        emu_file_for_del0 = fake_node0_list[1]
+        fake_node1_list = self.node_cfg_up('test1', 'node1ns', fixtures.b_boot_image, "quanta_d51")
+        fake_node1 = fake_node1_list[0]
+        emu_file_for_del1 = fake_node1_list[1]
 
         """
         Test peer_bmc fru print
