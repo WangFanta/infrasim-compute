@@ -93,7 +93,6 @@ def start_node_enclosure():
                         "drives": [
                             {
                                 "repeat": drv_count,
-                                "start_phy_id": 12,
                                 "format": "raw",
                                 "share-rw": "true",
                                 "version": "B29C",
@@ -136,7 +135,6 @@ def start_node_enclosure():
                         "drives": [
                             {
                                 "repeat": drv1_count,
-                                "start_phy_id": 12,
                                 "format": "raw",
                                 "share-rw": "true",
                                 "version": "B29C",
